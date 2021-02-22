@@ -40,13 +40,13 @@ window.addEventListener("DOMContentLoaded", function () {
       }
       if (timer.timeRemaining < 0) {
         clearInterval(idSetInterval);
-        timerHours.textContent = "00";
-        timerMinutes.textContent = "00";
-        timerSeconds.textContent = "00";
-        document.querySelector(".timer-numbers").style.color = "red";
+        timerHours.textContent = '00';
+        timerMinutes.textContent = '00';
+        timerSeconds.textContent = '00';
+        document.querySelector('.timer-numbers').style.color = 'red';
       }
     }, 1000);
   }
 
-  counTimer("23 february 2021");
+  counTimer('23 february 2021');
 });
