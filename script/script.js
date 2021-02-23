@@ -21,7 +21,7 @@ window.addEventListener("DOMContentLoaded", function () {
       };
     }
 
-    let idSetInterval = setInterval(function updateClock() {
+     function updateClock() {
       let timer = getTimeRemaining();
       if (timer.hours < 10){
       timerHours.textContent = '0' + timer.hours;
@@ -38,6 +38,7 @@ window.addEventListener("DOMContentLoaded", function () {
       } else {
         timerSeconds.textContent = timer.seconds;
       }
+      let idSetInterval = setInterval(updateClock,1000);
       if (timer.timeRemaining < 0) {
         clearInterval(idSetInterval);
         timerHours.textContent = '00';
@@ -45,8 +46,15 @@ window.addEventListener("DOMContentLoaded", function () {
         timerSeconds.textContent = '00';
         document.querySelector('.timer-numbers').style.color = 'red';
       }
-    }, 1000);
+      
+      
+    }
+    updateClock();
+    
   }
+ 
+  
+  counTimer('25 february 2021');
 
-  counTimer('23 february 2021');
+ 
 });
