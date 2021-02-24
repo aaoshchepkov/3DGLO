@@ -55,10 +55,10 @@ window.addEventListener("DOMContentLoaded", function () {
 
   // menu
   const toggleMenu = () => {
-    const btnMenu = document.querySelector(".menu");
+    const bodyMenu = document.querySelector('body');
     let menu = document.querySelector("menu");
-    const closeBtn = document.querySelector(".close-btn");
-    const menuItems = menu.querySelectorAll("ul>li>a");
+    let menuItem = menu.querySelectorAll('li>a');
+    let closeBtn = menu.querySelector('.close-btn');
     const HandlerMenu = function () {
       if (
         !menu.style.transform ||
@@ -69,12 +69,23 @@ window.addEventListener("DOMContentLoaded", function () {
         menu.style.transform = `translate(-100%)`;
       }
     };
-    btnMenu.addEventListener("click", HandlerMenu);
-    menu.addEventListener('click', (event)=>{
+    bodyMenu.addEventListener('click', (event) => {
       let target = event.target;
-      if(target.tagName === 'A'){
+      if (target.closest(".menu")) {
         HandlerMenu();
+      } else {
+        if (target === closeBtn || target.tagName !== 'MENU') {
+          menu.style.transform = `translate(-100%)`;
+        }
+        if (target) {
+          menuItem.forEach((item) => {
+            if (target === item) {
+              menu.style.transform = `translate(-100%)`;
+            }
+          });
+        }
       }
+
     });
   };
   toggleMenu();
@@ -97,7 +108,6 @@ window.addEventListener("DOMContentLoaded", function () {
             let center =
               document.documentElement.clientWidth / 2 -
               popupContent.offsetWidth / 2;
-            console.log(center);
             if (count > center) {
               clearInterval(timer);
             }
@@ -108,15 +118,15 @@ window.addEventListener("DOMContentLoaded", function () {
 
     popup.addEventListener("mousedown", (event) => {
       let target = event.target;
-      if(target.classList.contains('popup-close')){
+      if (target.classList.contains('popup-close')) {
         popup.style.display = "none";
       } else {
         target = target.closest(".popup-content");
-      if (target === null){
-      popup.style.display = "none";
+        if (target === null) {
+          popup.style.display = "none";
+        }
       }
-      }
-      
+
     });
 
 
@@ -141,7 +151,7 @@ window.addEventListener("DOMContentLoaded", function () {
     };
     tabHeader.addEventListener("click", (event) => {
       let target = event.target;
-          target = target.closest('.service-header-tab');
+      target = target.closest('.service-header-tab');
 
       if (target) {
         tab.forEach((item, i) => {
