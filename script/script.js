@@ -69,21 +69,40 @@ window.addEventListener("DOMContentLoaded", function () {
         menu.style.transform = `translate(-100%)`;
       }
     };
+
     bodyMenu.addEventListener('click', (event) => {
       let target = event.target;
       if (target.closest(".menu")) {
         HandlerMenu();
       } else {
-        if (target === closeBtn || target.tagName !== 'MENU') {
+        if (target === closeBtn || target.tagName !== 'MENU' && target.tagName !== 'LI') {
           menu.style.transform = `translate(-100%)`;
         }
         if (target) {
-          menuItem.forEach((item) => {
-            if (target === item) {
+          menuItem.forEach((element, i) => {
+            if (target === element) {
               menu.style.transform = `translate(-100%)`;
+              event.preventDefault();
+              const blockID = element.getAttribute('href').substr(1);
+              document.getElementById(blockID).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
             }
           });
         }
+      }
+      let btnServiceBlock = document.querySelector('main>a>img');
+      if (target === btnServiceBlock ) {
+       event.preventDefault();
+              btnServiceBlock = document.querySelector('main>a');
+              const blockID = btnServiceBlock.getAttribute('href').substr(1);
+              document.getElementById(blockID).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+             
+             
       }
 
     });
