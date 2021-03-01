@@ -313,17 +313,6 @@ window.addEventListener("DOMContentLoaded", function () {
 
 
   //Валидация 
-  let calc = document.querySelector('#calc');
-  let inputCalcItem = calc.querySelectorAll('div>  input');
-  calc.addEventListener('input', (event) => {
-    let target = event.target;
-    inputCalcItem.forEach((item) => {
-      if (target === item) {
-        item.value = item.value.replace(/\D/g, '');
-      }
-    });
-  });
-
 
   document.addEventListener('input', (event) => {
     let calc = document.querySelector('#calc');
@@ -334,27 +323,34 @@ window.addEventListener("DOMContentLoaded", function () {
         item.value = item.value.replace(/\D/g, '');
       }
     });
+
     if (target.matches('#form2-name') || target.matches('#form2-message') || target.matches('#form1-name')) {
-      let nameInput2 = document.querySelector('#form2-name');
-      let nameInput = document.querySelector('#form1-name');
-      let messageInput = document.querySelector('#form2-message');
-      nameInput.value = nameInput.value.replace(/[^а-яё\-\ ]/ig, '');
-      nameInput2.value = nameInput2.value.replace(/[^а-яё\-\ ]/ig, '');
-      messageInput.value = messageInput.value.replace(/[^а-яё\-\s\.\,]/ig, '');
+      target.value = target.value.replace(/[^а-яё\-\ ]/ig, '');
+
     }
     if (target.matches('#form2-email') || target.matches('#form1-email')) {
-      let emailInput2 = document.querySelector('#form2-email');
-      let emailInput = document.querySelector('#form1-email');
-      emailInput.value = emailInput.value.replace(/[^a-z@\-_.!~*']/ig, '');
-      emailInput2.value = emailInput2.value.replace(/[^a-z@\-_.!~*']/ig, '');
+      target.value = target.value.replace(/[^a-z@\-_.!~*']/ig, '');
     }
     if (target.matches('#form2-phone') || target.matches('#form1-phone')) {
-      let phonelInput2 = document.querySelector('#form2-phone');
-      let phonelInput = document.querySelector('#form1-phone');
-      phonelInput.value = phonelInput.value.replace(/[^0-9\-()]/ig, '');
-      phonelInput2.value = phonelInput2.value.replace(/[^0-9\-()]/ig, '');
+      target.value = target.value.replace(/[^0-9\-()]/ig, '');
     }
-
   });
+
+  document.addEventListener(('blur'), (event) => {
+    let target = event.target;
+    if (target.matches('#form2-message') || target.matches('#form2-email') || target.matches('#form1-email') ||
+      target.matches('#formform2-phone') || target.matches('#form1-phone') ||
+      target.matches('#form2-name') || target.matches('#form1-name')) {
+      target.value = target.value.replace(/ +/g, ' ').trim();
+      target.value = target.value.replace(/-+/g, '-');
+      target.value = target.value.replace(/^-/g, '');
+      target.value = target.value.replace(/-$/g, '');
+    }
+    if (target.matches('#form2-name') || target.matches('#form1-name')) {
+      target.value = target.value[0].toUpperCase() + target.value.slice(1);
+    }
+  }, true);
+
+
 
 });
