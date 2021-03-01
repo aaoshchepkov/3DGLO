@@ -53,7 +53,7 @@ window.addEventListener("DOMContentLoaded", function () {
     }
     updateClock();
   }
-  counTimer("28 february 2021");
+  counTimer("30 march 2021");
 
   // menu
   const toggleMenu = () => {
@@ -184,34 +184,34 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   };
   tabs();
-  
-  
+
+
   // Создаем точки
-  const addDots = () =>{
+  const addDots = () => {
     const slide = document.querySelectorAll('.portfolio-item');
     const dotsWrapper = document.querySelector('.portfolio-dots');
-     let li;
-      slide.forEach((item, i) =>{
-        li = document.createElement('li'); 
-        if(i === 0){
-          li.classList.add('dot-active');
-         li.classList.add('dot');
-        } else {
-          li.classList.add('dot');
-        }
-        if (i < slide.length){
-          dotsWrapper.appendChild(li);
-        }
-      });
+    let li;
+    slide.forEach((item, i) => {
+      li = document.createElement('li');
+      if (i === 0) {
+        li.classList.add('dot-active');
+        li.classList.add('dot');
+      } else {
+        li.classList.add('dot');
+      }
+      if (i < slide.length) {
+        dotsWrapper.appendChild(li);
+      }
+    });
   };
   addDots();
 
-// slider
+  // slider
   const slider = () => {
     const slide = document.querySelectorAll('.portfolio-item');
     let dot = document.querySelectorAll('.dot');
     const slider = document.querySelector('.portfolio-content');
-  
+
     let interval;
     let currentSlide = 0;
     const prevSlide = (elem, index, strClass) => {
@@ -234,7 +234,7 @@ window.addEventListener("DOMContentLoaded", function () {
     };
 
     const startSlide = (time = 3000) => {
-     interval = setInterval(autoPlaySlide, time);
+      interval = setInterval(autoPlaySlide, time);
 
     };
 
@@ -245,19 +245,19 @@ window.addEventListener("DOMContentLoaded", function () {
     slider.addEventListener('click', (event) => {
       event.preventDefault();
       let target = event.target;
-      if(!target.matches('.portfolio-btn, .dot')){
+      if (!target.matches('.portfolio-btn, .dot')) {
         return;
       }
 
       prevSlide(slide, currentSlide, 'portfolio-item-active');
       prevSlide(dot, currentSlide, 'dot-active');
-      if (target.matches('#arrow-right')){
+      if (target.matches('#arrow-right')) {
         currentSlide++;
-      } else if (target.matches('#arrow-left')){
+      } else if (target.matches('#arrow-left')) {
         currentSlide--;
       } else if (target.matches('.dot')) {
         dot.forEach((elem, index) => {
-          if (target === elem){
+          if (target === elem) {
             currentSlide = index;
           }
         });
@@ -266,32 +266,95 @@ window.addEventListener("DOMContentLoaded", function () {
         currentSlide = 0;
       }
       if (currentSlide < 0) {
-        currentSlide = slide.length-1;
+        currentSlide = slide.length - 1;
       }
 
       nextSlide(slide, currentSlide, 'portfolio-item-active');
       nextSlide(dot, currentSlide, 'dot-active');
-      
+
 
     });
     slider.addEventListener('mouseover', (event) => {
       if (event.target.matches('.portfolio-btn') ||
-      event.target.matches('.dot') ){
+        event.target.matches('.dot')) {
         stopSlide();
       }
 
     });
     slider.addEventListener('mouseout', (event) => {
       if (event.target.matches('.portfolio-btn') ||
-      event.target.matches('.dot') ){
+        event.target.matches('.dot')) {
         startSlide();
       }
 
     });
-    
+
     startSlide(3000);
   };
-  
+
   slider();
+
+
+  // Наша команда
+  let command = document.querySelector('.command');
+  let commandPhoto = document.querySelectorAll('.command__photo');
+  command.addEventListener('mouseover', (event) => {
+    let target = event.target;
+    commandPhoto.forEach((item) => {
+      let memorySrc = item.src;
+      if (target === item) {
+        item.src = item.dataset.img;
+        item.addEventListener('mouseout', () => {
+          item.src = memorySrc;
+        });
+      }
+    });
+  });
+
+
+  //Валидация 
+  let calc = document.querySelector('#calc');
+  let inputCalcItem = calc.querySelectorAll('div>  input');
+  calc.addEventListener('input', (event) => {
+    let target = event.target;
+    inputCalcItem.forEach((item) => {
+      if (target === item) {
+        item.value = item.value.replace(/\D/g, '');
+      }
+    });
+  });
+
+
+  document.addEventListener('input', (event) => {
+    let calc = document.querySelector('#calc');
+    let inputCalcItem = calc.querySelectorAll('div>  input');
+    let target = event.target;
+    inputCalcItem.forEach((item) => {
+      if (target === item) {
+        item.value = item.value.replace(/\D/g, '');
+      }
+    });
+    if (target.matches('#form2-name') || target.matches('#form2-message') || target.matches('#form1-name')) {
+      let nameInput2 = document.querySelector('#form2-name');
+      let nameInput = document.querySelector('#form1-name');
+      let messageInput = document.querySelector('#form2-message');
+      nameInput.value = nameInput.value.replace(/[^а-яё\-\ ]/ig, '');
+      nameInput2.value = nameInput2.value.replace(/[^а-яё\-\ ]/ig, '');
+      messageInput.value = messageInput.value.replace(/[^а-яё\-\s\.\,]/ig, '');
+    }
+    if (target.matches('#form2-email') || target.matches('#form1-email')) {
+      let emailInput2 = document.querySelector('#form2-email');
+      let emailInput = document.querySelector('#form1-email');
+      emailInput.value = emailInput.value.replace(/[^a-z@\-_.!~*']/ig, '');
+      emailInput2.value = emailInput2.value.replace(/[^a-z@\-_.!~*']/ig, '');
+    }
+    if (target.matches('#form2-phone') || target.matches('#form1-phone')) {
+      let phonelInput2 = document.querySelector('#form2-phone');
+      let phonelInput = document.querySelector('#form1-phone');
+      phonelInput.value = phonelInput.value.replace(/[^0-9\-()]/ig, '');
+      phonelInput2.value = phonelInput2.value.replace(/[^0-9\-()]/ig, '');
+    }
+
+  });
 
 });
