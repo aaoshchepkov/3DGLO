@@ -311,46 +311,71 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-
   //Валидация 
+  const validate = () => {
+    document.addEventListener('input', (event) => {
+      event.preventDefault();
+      let calc = document.querySelector('#calc');
+      let inputCalcItem = calc.querySelectorAll('div>  input');
+      let name = document.querySelectorAll('[name="user_name"]');
+      let email = document.querySelectorAll('[name="user_email"]');
+      let phone = document.querySelectorAll('[name="user_phone"]');
 
-  document.addEventListener('input', (event) => {
-    let calc = document.querySelector('#calc');
-    let inputCalcItem = calc.querySelectorAll('div>  input');
-    let target = event.target;
-    inputCalcItem.forEach((item) => {
-      if (target === item) {
-        item.value = item.value.replace(/\D/g, '');
+      let target = event.target;
+      const regularValid = () => {
+        target.value = target.value.replace(/ +/g, ' ');
+        target.value = target.value.replace(/-+/g, '-');
+        target.value = target.value.replace(/^-/g, '');
+        target.value = target.value.replace(/-$/g, '');
+        target.value = target.value.replace(/^ /g, '');
+        target.value = target.value.replace(/ $/g, '');
+      };
+
+      if (target.matches('#form2-message')) {
+        target.value = target.value.replace(/[^а-яё\-\ ,.]/ig, '');
+        target.addEventListener(('blur'), () => {
+          regularValid();
+        }, true);
       }
+
+      inputCalcItem.forEach((item) => {
+        if (target === item) {
+          item.value = item.value.replace(/\D/g, '');
+        }
+      });
+
+      name.forEach((item) => {
+        if (target === item) {
+          target.value = target.value.replace(/[^а-яё\-\ ]/ig, '');
+          item.addEventListener(('blur'), () => {
+          regularValid();
+          target.value = target.value.split(' ').map(word => word[0].toUpperCase() + word.substring(1)).join(' ');
+              
+          }, true);
+        }
+      });
+
+      email.forEach((item) => {
+        if (target === item) {
+          
+          target.value = target.value.replace(/[^a-z@\-_.!~*']/ig, '');
+          item.addEventListener(('blur'), () => {
+          regularValid();
+          }, true);
+        }
+      });
+
+      phone.forEach((item) => {
+        if (target === item) {
+          target.value = target.value.replace(/[^0-9\-()]/ig, '');
+          item.addEventListener(('blur'), () => {
+            regularValid();
+          }, true);
+        }
+      });
     });
+  };
 
-    if (target.matches('#form2-name') || target.matches('#form2-message') || target.matches('#form1-name')) {
-      target.value = target.value.replace(/[^а-яё\-\ ]/ig, '');
-
-    }
-    if (target.matches('#form2-email') || target.matches('#form1-email')) {
-      target.value = target.value.replace(/[^a-z@\-_.!~*']/ig, '');
-    }
-    if (target.matches('#form2-phone') || target.matches('#form1-phone')) {
-      target.value = target.value.replace(/[^0-9\-()]/ig, '');
-    }
-  });
-
-  document.addEventListener(('blur'), (event) => {
-    let target = event.target;
-    if (target.matches('#form2-message') || target.matches('#form2-email') || target.matches('#form1-email') ||
-      target.matches('#formform2-phone') || target.matches('#form1-phone') ||
-      target.matches('#form2-name') || target.matches('#form1-name')) {
-      target.value = target.value.replace(/ +/g, ' ').trim();
-      target.value = target.value.replace(/-+/g, '-');
-      target.value = target.value.replace(/^-/g, '');
-      target.value = target.value.replace(/-$/g, '');
-    }
-    if (target.matches('#form2-name') || target.matches('#form1-name')) {
-      target.value = target.value[0].toUpperCase() + target.value.slice(1);
-    }
-  }, true);
-
-
+  validate();
 
 });
