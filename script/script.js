@@ -132,7 +132,7 @@ window.addEventListener("DOMContentLoaded", function () {
             if (count > center) {
               clearInterval(timer);
             }
-          }, 5);
+          }, 1);
         }
       });
     });
@@ -388,14 +388,14 @@ window.addEventListener("DOMContentLoaded", function () {
 
     const constSum = () =>{
       let total = 0;
-      let countValue = 1;
+      let countValue =1;
       let dayValue = 1;
       const typeValue = calcType.options[calcType.selectedIndex].value;
       const squareValue = +calcSquare.value;
       
       if (calcCount.value > 1) {
-        countValue+= (calcCount.value -1) /10;
-      }
+        countValue = countValue + (calcCount.value-1) / 10;
+        }
 
       if (calcDay.value && calcDay.value < 5) {
         dayValue*= 2;
@@ -406,6 +406,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
       if(typeValue && squareValue){
         total = price * typeValue * squareValue * countValue * dayValue;
+        total = Math.floor(total);
       }
       totalValue.textContent = total;
     };
@@ -413,9 +414,17 @@ window.addEventListener("DOMContentLoaded", function () {
       const target = event.target;
       if(target.matches('.calc-day') || target.matches('.calc-square') || 
       target.matches('.calc-type') || target.matches('.calc-count')){
-        constSum();
+        constSum();}
 
-      }
+     if (target.matches('.calc-type')){
+        if(calcType.options[calcType.selectedIndex].value === '') {
+        calcSquare.value = '';
+        calcCount.value = '';
+        calcDay.value = '';          
+        totalValue.value = ''; 
+        
+        }
+        }
 
     });      
 
