@@ -340,7 +340,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
       name.forEach((item) => {
         if (target === item) {
-          target.value = target.value.replace(/[^а-яё\ ][^0-9\.,]/gi, "");
+          target.value = target.value.replace(/[^а-яё\ ]/gi, "");
           item.addEventListener(
             "blur",
             () => {
