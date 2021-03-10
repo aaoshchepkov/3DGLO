@@ -140,10 +140,12 @@ window.addEventListener("DOMContentLoaded", function () {
       let target = event.target;
       if (target.classList.contains("popup-close")) {
         popup.style.display = "none";
+        popup.querySelector('input').value = '';
       } else {
         target = target.closest(".popup-content");
         if (target === null) {
           popup.style.display = "none";
+          popup.querySelector('input').value = '';
         }
       }
     });
@@ -305,6 +307,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
   //Валидация
   const validate = () => {
+    maskPhone('[name="user_phone"]','+7-___-___-__-__');
     document.addEventListener("input", (event) => {
       event.preventDefault();
       let calc = document.querySelector("#calc");
@@ -322,7 +325,7 @@ window.addEventListener("DOMContentLoaded", function () {
       };
 
       if (target.matches("#form2-message")) {
-        target.value = target.value.replace(/[^а-яё\-\ ,.][^0-9\!?]/gi, "");
+        target.value = target.value.replace(/[^а-яё\-\ ,.!?]/gi, "");
         target.addEventListener(
           "blur",
           () => {
@@ -349,6 +352,11 @@ window.addEventListener("DOMContentLoaded", function () {
                 .split(" ")
                 .map((word) => word[0].toUpperCase() + word.substring(1))
                 .join(" ");
+              if (target.value.length < 2) {
+			            target.placeholder = "Имя должно быть не короче 2 букв";
+                  setTimeout(function () {target.placeholder = "Ваше имя";},3000);
+                  target.value = "";
+		           }  
             },
             true
           );
@@ -357,11 +365,17 @@ window.addEventListener("DOMContentLoaded", function () {
 
       email.forEach((item) => {
         if (target === item) {
-          target.value = target.value.replace(/[^a-z@\-_.!~*']/gi, "");
+          target.value = target.value.replace(/[^a-z0-9\@\-_.!~*']/gi, "");
           item.addEventListener(
             "blur",
             () => {
               regularValid();
+              let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+              if(reg.test(item.value) === false) {
+               target.placeholder = "Введите в формате mail@mail.com";
+               setTimeout(function () {target.placeholder = "E-mail";},3000);
+               target.value ='';
+             }
             },
             true
           );
@@ -370,11 +384,16 @@ window.addEventListener("DOMContentLoaded", function () {
 
       phone.forEach((item) => {
         if (target === item) {
-          target.value = target.value.replace(/[^0-9\+]/gi, "");
+          target.value = target.value.replace(/[^0-9\+-]/gi, "");
           item.addEventListener(
             "blur",
             () => {
               regularValid();
+              if (target.value.length < 16) {
+			            target.placeholder = "Введите в формате +7-999-999-99-99";
+                  setTimeout(function () {target.placeholder = "Номер телефона";},3000);
+                  target.value = "";
+		           }
             },
             true
           );
@@ -448,13 +467,14 @@ window.addEventListener("DOMContentLoaded", function () {
     const successMessage = "Спасибо за обращение! Мы скоро с вами свяжемся";
     const form = document.querySelectorAll('form');
     const statusMessage = document.createElement("div");
-    statusMessage.style.cssText = "font-size: 2rem; z-index:10; color: white;";
+    let popup = document.querySelector('.popup');
+           
+    statusMessage.style.cssText = "font-size: 2rem; color: white;";
     form.forEach((item) => {
       item.addEventListener('submit', (event) => {
         event.preventDefault();
         item.appendChild(statusMessage);
-        statusMessage.textContent = loadMessage;
-
+        statusMessage.textContent = loadMessage;        
         const formData = new FormData(item);
         postData(formData)
           .then((response) => {
@@ -466,15 +486,15 @@ window.addEventListener("DOMContentLoaded", function () {
             input.forEach((item) => {
             item.value = '';
             });
+            setTimeout(() =>{popup.style.display = 'none';}, 2000);
+            setTimeout(() =>{statusMessage.remove();}, 5000);
+            
           })
           .catch((error) => {
             statusMessage.textContent = erorrMessage;
             console.error(error);
-            let input = item.querySelectorAll('input');
-            input.forEach((item) => {
-            item.value = '';
-            });
           });
+          
       });
     });
 
@@ -487,6 +507,8 @@ window.addEventListener("DOMContentLoaded", function () {
         },
         body: formData 
       });
+      
+      
     };
   };
 
