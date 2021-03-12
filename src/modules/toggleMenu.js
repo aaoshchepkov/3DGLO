@@ -4,32 +4,22 @@ const toggleMenu = () => {
     let menu = document.querySelector("menu");
     let menuItem = menu.querySelectorAll("li>a");
     let closeBtn = menu.querySelector(".close-btn");
-    const HandlerMenu = function () {
-      if (
-        !menu.style.transform ||
-        menu.style.transform === `translate(-100%)`
-      ) {
-        menu.style.transform = `translate(0)`;
-      } else {
-        menu.style.transform = `translate(-100%)`;
-      }
-    };
-
+    
     bodyMenu.addEventListener("click", (event) => {
       let target = event.target;
       if (target.closest(".menu")) {
-        HandlerMenu();
+         menu.classList.toggle("active-menu");
       } else {
         if (
           target === closeBtn ||
           (target.tagName !== "MENU" && target.tagName !== "LI")
         ) {
-          menu.style.transform = `translate(-100%)`;
+         menu.classList.remove("active-menu");
         }
         if (target) {
           menuItem.forEach((element, i) => {
             if (target === element) {
-              menu.style.transform = `translate(-100%)`;
+             menu.classList.remove("active-menu");
               event.preventDefault();
               const blockID = element.getAttribute("href").substr(1);
               document.getElementById(blockID).scrollIntoView({
